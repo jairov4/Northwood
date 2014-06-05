@@ -1,0 +1,279 @@
+﻿<UserControl xmlns:UI="clr-namespace:Northwood.UI"  x:Class="Northwood.UI.ProjectShell"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="1200" TextElement.FontSize="20" TextElement.Foreground="#002090">
+	<Grid Background="#eee">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<TabControl Grid.Row="0" TextElement.FontSize="17" TextElement.Foreground="Black" Background="White" RenderOptions.BitmapScalingMode="NearestNeighbor">
+			<TabControl.Effect>
+				<DropShadowEffect BlurRadius="10" Color="#AFBCD2" />
+			</TabControl.Effect>
+			<TabControl.Resources>
+				<Style TargetType="HeaderedItemsControl">
+					<Setter Property="ItemsPanel">
+						<Setter.Value>
+							<ItemsPanelTemplate>
+								<StackPanel Orientation="Horizontal" />
+							</ItemsPanelTemplate>
+						</Setter.Value>
+					</Setter>
+					<Setter Property="Template">
+						<Setter.Value>
+							<ControlTemplate TargetType="HeaderedItemsControl">
+								<Border>
+									<DockPanel>
+										<Rectangle SnapsToDevicePixels="True" Width="1" DockPanel.Dock="Right" Fill="#ddd" Margin="0,4,5,4" />
+										<Border DockPanel.Dock="Bottom">
+											<ContentPresenter Content="{TemplateBinding Header}" 
+															  TextElement.FontFamily="Verdana" 
+															  TextElement.FontSize="13" 
+															  TextElement.Foreground="#aaa" 
+															  TextElement.FontStyle="Italic" 
+															  TextBlock.TextAlignment="Center" />
+										</Border>
+										<ItemsPresenter />
+									</DockPanel>
+								</Border>
+							</ControlTemplate>
+						</Setter.Value>
+					</Setter>
+				</Style>
+				<Style TargetType="Button">
+					<Setter Property="Background" Value="Transparent" />
+					<Setter Property="BorderBrush" Value="Transparent" />
+					<Setter Property="Margin" Value="3,0" />
+					<Setter Property="Padding" Value="4,2" />
+				</Style>
+			</TabControl.Resources>
+			<TabItem>
+				<TabItem.Header>
+					<Border Margin="-7,-4" Background="#04B">
+						<TextBlock Foreground="White" Padding="20,4" FontFamily="Verdana">Archivo</TextBlock>
+					</Border>
+				</TabItem.Header>
+			</TabItem>
+			<TabItem Header="GENERAL">
+				<StackPanel Orientation="Horizontal">
+					<HeaderedItemsControl Header="Nuevo" x:Name="rgNew">
+						<Button Command="New" CommandParameter="{x:Static UI:Commands.BlockDiagramDocument}">
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Diagrama</TextBlock>
+								<Image Source="Images/DrawingSheet_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button Command="New" CommandParameter="{x:Static UI:Commands.FSMDocument}">
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">FSM</TextBlock>
+								<Image Source="Images/AddFile_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button Command="New" CommandParameter="{x:Static UI:Commands.Testbench}">
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Testbench</TextBlock>
+								<Image Source="Images/Squeeze_32x32.png" />
+							</DockPanel>
+						</Button>
+					</HeaderedItemsControl>
+					<HeaderedItemsControl Header="Edicion" x:Name="rgEdit">
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Guardar</TextBlock>
+								<Image Source="Images/Export_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Cerrar</TextBlock>
+								<Image Source="Images/Close_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Cortar</TextBlock>
+								<Image Source="Images/Cut_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Copiar</TextBlock>
+								<Image Source="Images/Copy_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Pegar</TextBlock>
+								<Image Source="Images/Paste_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Renombrar</TextBlock>
+								<Image Source="Images/Replace_32x32.png" />
+							</DockPanel>
+						</Button>
+					</HeaderedItemsControl>
+					<HeaderedItemsControl Header="Sistema" x:Name="rgSystem">
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Compilar</TextBlock>
+								<Image Source="Images/Build_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Ver VHDL</TextBlock>
+								<Image Source="Images/TextBox_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Exportar</TextBlock>
+								<Image Source="Images/ExportFile_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Seleccionar</TextBlock>
+								<Image Source="Images/white-arrow.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Puerto</TextBlock>
+								<Image Source="Images/Tag_32x32.png" />
+							</DockPanel>
+						</Button>
+					</HeaderedItemsControl>
+				</StackPanel>
+			</TabItem>
+			<TabItem Header="DISENO">
+				<StackPanel Orientation="Horizontal">
+					<HeaderedItemsControl Header="General" x:Name="rgEditGeneral">
+						<Button Command="{x:Static ApplicationCommands.Open}">
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Editar</TextBlock>
+								<Image Source="Images/Edit_32x32.png" />
+							</DockPanel>
+						</Button>
+					</HeaderedItemsControl>
+					<HeaderedItemsControl Header="Diagrama" x:Name="rgDiagram">
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Cable</TextBlock>
+								<Image Source="Images/PictureShapeOutlineColor_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Bus</TextBlock>
+								<Image Source="Images/BusFanOut_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Entidad</TextBlock>
+								<Image Source="Images/Block_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Cablear puertos</TextBlock>
+								<Image Source="Images/ConnectorWires_32x32.png" />
+							</DockPanel>
+						</Button>
+					</HeaderedItemsControl>
+					<HeaderedItemsControl Header="FSM" x:Name="rgFSM">
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Estado</TextBlock>
+								<Image Source="Images/Colors_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Transicion</TextBlock>
+								<Image Source="Images/Pyramid_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Puerto Reset</TextBlock>
+								<Image Source="Images/Add_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Puerto Clock</TextBlock>
+								<Image Source="Images/Time_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Estado inicial</TextBlock>
+								<Image Source="Images/Status_32x32.png" />
+							</DockPanel>
+						</Button>
+					</HeaderedItemsControl>
+				</StackPanel>
+			</TabItem>
+			<TabItem Header="SIMULACION">
+				<StackPanel Orientation="Horizontal">
+					<HeaderedItemsControl Header="Simulacion" x:Name="rgSimulation">
+						<DockPanel Margin="4,0" Width="300">
+							<Label DockPanel.Dock="Top">Entidad superior:</Label>
+							<ComboBox />
+						</DockPanel>
+						<DockPanel>
+							<Label DockPanel.Dock="Top" TextBlock.FontStyle="Italic">Durante:</Label>
+							<TextBox TextAlignment="Right" MinWidth="90" MaxWidth="200" />
+						</DockPanel>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Simular</TextBlock>
+								<Image Source="Images/Last_32x32.png" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Detener</TextBlock>
+								<Image Source="Images/player_stop.png" Width="32" />
+							</DockPanel>
+						</Button>
+						<Button>
+							<DockPanel>
+								<TextBlock DockPanel.Dock="Bottom">Reiniciar</TextBlock>
+								<Image Source="Images/DoublePrev_32x32.png" />
+							</DockPanel>
+						</Button>
+					</HeaderedItemsControl>
+				</StackPanel>
+			</TabItem>
+		</TabControl>
+		<xcad:DockingManager Grid.Row="1" x:Name="dockingManager">
+			<xcad:LayoutRoot x:Name="dockingLayoutRoot">
+				<xcad:LayoutPanel Orientation="Horizontal">
+					<xcad:LayoutAnchorablePane DockWidth="300">
+						<xcad:LayoutAnchorable Title="Explorador de Proyecto" ContentId="fds">
+							<UI:ProjectExplorer />
+						</xcad:LayoutAnchorable>
+						<xcad:LayoutAnchorable Title="Jerarquia">
+
+						</xcad:LayoutAnchorable>
+					</xcad:LayoutAnchorablePane>
+					<xcad:LayoutDocumentPaneGroup>
+						<xcad:LayoutDocumentPane x:Name="dockingDocumentPane">
+
+						</xcad:LayoutDocumentPane>
+					</xcad:LayoutDocumentPaneGroup>
+				</xcad:LayoutPanel>
+			</xcad:LayoutRoot>
+		</xcad:DockingManager>
+	</Grid>
+</UserControl>
