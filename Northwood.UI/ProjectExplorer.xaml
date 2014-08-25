@@ -5,9 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-	<UserControl.CommandBindings>
-		<CommandBinding Command="Open" CanExecute="cmdOpen_CanExecute" Executed="cmdOpen_Executed" />
-	</UserControl.CommandBindings>
 	<DockPanel>
 		<ListBox ItemsSource="{Binding Documents}" SelectedItem="{Binding SelectedDocument}" />
 	</DockPanel>

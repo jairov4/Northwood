@@ -13,7 +13,7 @@ namespace Northwood
 		public string Name
 		{
 			get { return _Name; }
-			set { SetValue("Name", ref _Name, value); }
+			set { SetValue(ref _Name, value); }
 		}
 
 		ObservableCollection<ProjectDocument> _Documents = new ObservableCollection<ProjectDocument>();

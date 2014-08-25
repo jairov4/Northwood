@@ -8,6 +8,6 @@ namespace Northwood.UI
 {
 	public interface IProjectShell
 	{
-		void Show();
+		void CloseBackstage();
 	}
 }

@@ -14,8 +14,8 @@ namespace Northwood.UI
 		public MainWindow()
 		{
 			InitializeComponent();
-			Content = new Backstage();
-			IoC.Container.Register(new ProjectManager());
 		}
+
+		public ProjectShell Shell { get { return shell; } }
 	}
 }

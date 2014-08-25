@@ -13,7 +13,7 @@ namespace Northwood
 		public string Name
 		{
 			get { return _Name; }
-			set { SetValue("Name", ref _Name, value); }
+			set { SetValue(ref _Name, value); }
 		}
 
 		public ProjectDocument()
@@ -38,7 +38,7 @@ namespace Northwood
 		public int Size
 		{
 			get { return _Size; }
-			set { SetValue("Size", ref _Size, value); }
+			set { SetValue(ref _Size, value); }
 		}
 	}
 

@@ -21,18 +21,13 @@ namespace Northwood.UI
 	/// <summary>
 	/// Lógica de interacción para ProjectShell.xaml
 	/// </summary>
-	[Export(typeof(IProjectShell))]
-	public partial class ProjectShell : UserControl, IProjectShell
+	public partial class ProjectShell : UserControl
 	{
 		public ProjectShell()
 		{
 			InitializeComponent();
-			DataContext = IoC.Container.Resolve<IProjectManager>();
 		}
 
-		public void Show()
-		{
-			App.Current.MainWindow.Content = this;
-		}
+		public ProjectShellViewModel ViewModel { get; set; }
 	}
 }

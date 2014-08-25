@@ -23,23 +23,8 @@ namespace Northwood.UI
 		public ProjectExplorer()
 		{
 			InitializeComponent();
-			ViewModel = new ProjectExplorerViewModel();
-			DataContext = ViewModel;
 		}
 
 		public ProjectExplorerViewModel ViewModel { get; set; }
-
-		private void cmdOpen_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-		{
-			e.CanExecute = ViewModel.SelectedDocument != null;
-			e.Handled = true;
-			e.ContinueRouting = false;
-		}
-
-		private void cmdOpen_Executed(object sender, ExecutedRoutedEventArgs e)
-		{
-			var ef = IoC.Container.Resolve<IEditorFactory>();
-			ef.EditDocument(ViewModel.SelectedDocument, true);
-		}		
 	}
 }

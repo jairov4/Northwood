@@ -53,6 +53,9 @@
     <ApplicationIcon>Images\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.4.1\lib\net40\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework.Classic" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -93,11 +96,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EditorFactory.cs" />
+    <Compile Include="UIAppCommandImpl.cs" />
     <Compile Include="ViewModel\BackstageViewModel.cs" />
     <Compile Include="Model\IEditorFactory.cs" />
     <Compile Include="Model\IProjectShell.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="ViewModel\ProjectExplorerViewModel.cs" />
+    <Compile Include="ViewModel\ProjectShellViewModel.cs" />
     <Page Include="Backstage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -127,7 +133,6 @@
     <Compile Include="BlockDiagramView.xaml.cs">
       <DependentUpon>BlockDiagramView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IoC.cs" />
     <Compile Include="Model\IProjectManager.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

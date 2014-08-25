@@ -32,7 +32,7 @@ namespace Northwood.UI
 		public ProjectRoot CurrentProject
 		{
 			get { return _CurrentProject; }
-			private set { SetValue("CurrentProject", ref _CurrentProject, value); }
+			private set { SetValue(ref _CurrentProject, value); }
 		}
 
 		public ProjectBlockDiagram AddBlockDiagram()

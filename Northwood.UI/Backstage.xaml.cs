@@ -25,11 +25,5 @@ namespace Northwood.UI
 		{
 			InitializeComponent();
 		}
-
-		private void btnNewProject_Click(object sender, RoutedEventArgs e)
-		{
-			var projectManager = IoC.Container.Resolve<IProjectManager>();
-			projectManager.CreateNew();
-		}
 	}
 }

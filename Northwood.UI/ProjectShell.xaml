@@ -11,7 +11,7 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
-		<TabControl Grid.Row="0" TextElement.FontSize="17" TextElement.Foreground="Black" Background="White" RenderOptions.BitmapScalingMode="NearestNeighbor">
+		<TabControl x:Name="ribbon" Grid.Row="0" TextElement.FontSize="17" TextElement.Foreground="Black" Background="White" RenderOptions.BitmapScalingMode="NearestNeighbor">
 			<TabControl.Effect>
 				<DropShadowEffect BlurRadius="10" Color="#AFBCD2" />
 			</TabControl.Effect>
@@ -32,11 +32,11 @@
 										<Rectangle SnapsToDevicePixels="True" Width="1" DockPanel.Dock="Right" Fill="#ddd" Margin="0,4,5,4" />
 										<Border DockPanel.Dock="Bottom">
 											<ContentPresenter Content="{TemplateBinding Header}" 
-															  TextElement.FontFamily="Verdana" 
-															  TextElement.FontSize="13" 
-															  TextElement.Foreground="#aaa" 
-															  TextElement.FontStyle="Italic" 
-															  TextBlock.TextAlignment="Center" />
+																  TextElement.FontFamily="Verdana" 
+																  TextElement.FontSize="13" 
+																  TextElement.Foreground="#aaa" 
+																  TextElement.FontStyle="Italic" 
+																  TextBlock.TextAlignment="Center" />
 										</Border>
 										<ItemsPresenter />
 									</DockPanel>
@@ -275,5 +275,6 @@
 				</xcad:LayoutPanel>
 			</xcad:LayoutRoot>
 		</xcad:DockingManager>
+		<UI:Backstage x:Name="backstage" Grid.Row="1" />
 	</Grid>
 </UserControl>

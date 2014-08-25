@@ -12,9 +12,9 @@ namespace Northwood.UI
 	{
 		IProjectManager projectManager;
 
-		public ProjectExplorerViewModel()
+		public ProjectExplorerViewModel(IProjectManager manager)
 		{
-			projectManager = IoC.Container.Resolve<IProjectManager>();
+			projectManager = manager;
 			projectManager.PropertyChanged += projectManager_PropertyChanged;
 			Update();
 		}
@@ -44,7 +44,7 @@ namespace Northwood.UI
 		public ProjectDocument SelectedDocument
 		{
 			get { return _SelectedDocument; }
-			set { SetValue("SelectedDocument", ref _SelectedDocument, value); }
+			set { SetValue(ref _SelectedDocument, value); }
 		}
 
 	}
