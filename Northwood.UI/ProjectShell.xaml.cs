@@ -28,6 +28,11 @@ namespace Northwood.UI
 			InitializeComponent();
 		}
 
-		public ProjectShellViewModel ViewModel { get; set; }
+		public ProjectShellViewModel ViewModel
+		{
+			get { return DataContext as ProjectShellViewModel; }
+			set { DataContext = value; }
+		}
+
 	}
 }

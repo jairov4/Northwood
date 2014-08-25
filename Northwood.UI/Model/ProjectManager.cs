@@ -9,23 +9,27 @@ namespace Northwood.UI
 	[Export(typeof(IProjectManager))]
 	public class ProjectManager : ViewModel, IProjectManager
 	{
+		protected readonly ILogger log;
 
-		public ProjectManager()
+		public ProjectManager(ILogger logger)
 		{
+			this.log = logger;
 		}
 
-		public void CreateNew()
+		public void CreateNewProject()
 		{
 			if (CurrentProject != null)
 			{
+				log.Info("Closing current project");
 				CloseProject();
 			}
 			CurrentProject = new ProjectRoot();
+			log.Info("New Project created");
 		}
 
 		private void CloseProject()
 		{
-			throw new NotImplementedException();
+			CurrentProject = null;
 		}
 
 		ProjectRoot _CurrentProject;

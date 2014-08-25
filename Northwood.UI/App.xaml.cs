@@ -17,7 +17,6 @@ namespace Northwood.UI
 	/// </summary>
 	public partial class App : Application
 	{
-
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			base.OnStartup(e);
@@ -43,7 +42,8 @@ namespace Northwood.UI
 			builder.RegisterType<EditorFactory>().As<IEditorFactory>().SingleInstance();
 			builder.RegisterType<ProjectShellViewModel>().As<IProjectShell>().As<ProjectShellViewModel>().SingleInstance();
 			builder.RegisterType<UIAppCommandImpl>().SingleInstance();
-			builder.RegisterInstance(wnd);
+			builder.RegisterType<LoggerTrace>().As<ILogger>().SingleInstance();
+			builder.RegisterInstance(wnd).As<Window>().SingleInstance();
 		}
 	}
 }

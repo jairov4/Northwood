@@ -8,7 +8,7 @@ namespace Northwood.UI
 {
 	public interface IProjectManager : INotifyPropertyChanged
 	{
-		void CreateNew();
+		void CreateNewProject();
 
 		ProjectRoot CurrentProject { get; }
 	}

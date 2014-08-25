@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,12 @@ namespace Northwood.UI
 {
 	public class ProjectExplorerViewModel : ViewModel
 	{
-		IProjectManager projectManager;
+		readonly ILogger log;
+		readonly IProjectManager projectManager;
 
-		public ProjectExplorerViewModel(IProjectManager manager)
+		public ProjectExplorerViewModel(ILogger log, IProjectManager manager)
 		{
+			this.log = log;
 			projectManager = manager;
 			projectManager.PropertyChanged += projectManager_PropertyChanged;
 			Update();
@@ -24,14 +27,14 @@ namespace Northwood.UI
 			Documents = new ReadOnlyObservableCollection<ProjectDocument>(projectManager.CurrentProject.Documents);
 		}
 
-		void projectManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		void projectManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == "CurrentProject")
 			{
+				log.Info("Selected document has changed: {0}", new []{ SelectedDocument });
 				Update();
 			}
 		}
-
 		
 		public IReadOnlyCollection<ProjectDocument> Documents
 		{

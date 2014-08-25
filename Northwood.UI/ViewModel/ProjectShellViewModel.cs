@@ -26,5 +26,10 @@ namespace Northwood.UI
 		{
 			State = ShellState.ProjectEditor;
 		}
+
+		public ProjectShellViewModel(IProjectManager manager)
+		{
+			State = manager.CurrentProject == null ? ShellState.Backstage : ShellState.ProjectEditor;
+		}
 	}
 }

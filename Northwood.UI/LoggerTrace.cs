@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Northwood
 {
-	public abstract class ViewModel : ObservableObject, IViewModel
+	public class LoggerTrace : LoggerBase
 	{
-
+		protected override void Log(string str)
+		{
+			Trace.WriteLine(str);
+		}
 	}
 }

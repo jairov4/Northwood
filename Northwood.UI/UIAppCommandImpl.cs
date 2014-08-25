@@ -61,7 +61,7 @@ namespace Northwood.UI
 				if (param == Commands.BlankProject)
 				{
 					e.Handled = true;
-					manager.CreateNew();
+					manager.CreateNewProject();
 				}
 				else if (param == Commands.FSMDocument)
 				{
@@ -71,16 +71,12 @@ namespace Northwood.UI
 				}
 				else if (param == Commands.BlockDiagramDocument)
 				{
-					e.Handled = true;
-					var project = manager.CurrentProject;
-					if (project != null)
+					e.Handled = true;					
+					if (manager.CurrentProject == null)
 					{
-						project.Documents.Add(new ProjectBlockDiagram());
+						manager.CreateNewProject();
 					}
-					else
-					{
-						NotifyToUser("First create project, later you can add a Block Diagram");
-					}
+					manager.CurrentProject.Documents.Add(new ProjectBlockDiagram());
 				}
 				if (e.Handled)
 				{
