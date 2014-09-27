@@ -24,7 +24,11 @@ namespace Northwood.UI
 		{
 			InitializeComponent();
 		}
-
-		public ProjectExplorerViewModel ViewModel { get; set; }
+		
+		public ProjectExplorerViewModel ViewModel
+		{
+			get { return DataContext as ProjectExplorerViewModel; }
+			set { DataContext = value; }
+		}
 	}
 }
