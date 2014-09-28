@@ -21,7 +21,7 @@ namespace Northwood.UI
 	/// <summary>
 	/// Lógica de interacción para ProjectShell.xaml
 	/// </summary>
-	public partial class ProjectShell : UserControl
+	public partial class ProjectShell : UserControl, IView
 	{
 		public ProjectShell()
 		{
@@ -34,5 +34,11 @@ namespace Northwood.UI
 			set { DataContext = value; }
 		}
 
+
+		IViewModel IView.ViewModel
+		{
+			get { return this.ViewModel; }
+			set { this.ViewModel = (ProjectShellViewModel)value; }
+		}
 	}
 }

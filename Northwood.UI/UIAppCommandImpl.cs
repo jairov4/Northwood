@@ -76,7 +76,7 @@ namespace Northwood.UI
 					{
 						manager.CreateNewProject();
 					}
-					manager.CurrentProject.Documents.Add(new ProjectBlockDiagram());
+					manager.AddBlockDiagram();
 				}
 				if (e.Handled)
 				{

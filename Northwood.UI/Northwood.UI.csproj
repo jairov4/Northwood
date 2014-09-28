@@ -103,6 +103,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AutowireViewModel.cs" />
     <Compile Include="EditorFactory.cs" />
     <Compile Include="LoggerTrace.cs" />
     <Compile Include="UIAppCommandImpl.cs" />

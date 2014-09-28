@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,10 +39,11 @@ namespace Northwood.UI
 		public ProjectShellViewModel(IProjectManager manager)
 		{
 			_Manager = manager;
+			State = ShellState.Backstage;
 			manager.PropertyChanged += manager_PropertyChanged;			
 		}
 
-		void manager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		void manager_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if(e.PropertyName == "CurrentProject")
 			{

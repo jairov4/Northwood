@@ -30,7 +30,7 @@ namespace Northwood.UI
 			var cmd = container.Resolve<UIAppCommandImpl>();
 			cmd.RegisterCommandHandlers();
 
-			wnd.Shell.ViewModel = container.Resolve<ProjectShellViewModel>();
+			ViewModelResolver.Container = container;
 
 			MainWindow = wnd;
 			wnd.Show();
@@ -39,11 +39,13 @@ namespace Northwood.UI
 		private void Bootstrap(ContainerBuilder builder, Window wnd)
 		{
 			builder.RegisterType<ProjectManager>().As<IProjectManager>().SingleInstance();
-			builder.RegisterType<EditorFactory>().As<IEditorFactory>().SingleInstance();
-			builder.RegisterType<ProjectShellViewModel>().As<IProjectShell>().As<ProjectShellViewModel>().SingleInstance();
+			builder.RegisterType<EditorFactory>().As<IEditorFactory>().SingleInstance();			
 			builder.RegisterType<UIAppCommandImpl>().SingleInstance();
 			builder.RegisterType<LoggerTrace>().As<ILogger>().SingleInstance();
 			builder.RegisterInstance(wnd).As<Window>().SingleInstance();
+
+			builder.RegisterType<ProjectShellViewModel>().As<IProjectShell>().As<ProjectShellViewModel>().SingleInstance();
+			builder.RegisterType<ProjectExplorerViewModel>();			
 		}
 	}
 }

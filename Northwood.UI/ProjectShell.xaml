@@ -10,8 +10,9 @@
 			 x:Class="Northwood.UI.ProjectShell"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="1000"
-			 d:DataContext="{d:DesignInstance {x:Type UI:ProjectShellViewModel}}"
-			 TextElement.FontSize="20" TextElement.Foreground="#002090">
+			 TextElement.FontSize="20" TextElement.Foreground="#002090"
+			 UI:ViewModelResolver.Autowire="True"
+			 >
 
 	<Grid Background="#eee">
 		<VisualStateManager.VisualStateGroups>

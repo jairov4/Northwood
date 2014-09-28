@@ -18,7 +18,7 @@ namespace Northwood.UI
 	/// <summary>
 	/// Lógica de interacción para ProjectExplorer.xaml
 	/// </summary>
-	public partial class ProjectExplorer : UserControl
+	public partial class ProjectExplorer : UserControl, IView
 	{
 		public ProjectExplorer()
 		{
@@ -29,6 +29,18 @@ namespace Northwood.UI
 		{
 			get { return DataContext as ProjectExplorerViewModel; }
 			set { DataContext = value; }
+		}
+
+		IViewModel IView.ViewModel
+		{
+			get
+			{
+				return ViewModel;
+			}
+			set
+			{
+				ViewModel = (ProjectExplorerViewModel)value;
+			}
 		}
 	}
 }

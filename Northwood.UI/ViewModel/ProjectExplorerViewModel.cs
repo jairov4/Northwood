@@ -24,22 +24,27 @@ namespace Northwood.UI
 
 		private void Update()
 		{
-			Documents = new ReadOnlyObservableCollection<ProjectDocument>(projectManager.CurrentProject.Documents);
+			if (projectManager.CurrentProject != null)
+			{
+				Documents = new ReadOnlyObservableCollection<ProjectDocument>(projectManager.CurrentProject.Documents);
+			}
 		}
 
 		void projectManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == "CurrentProject")
 			{
-				log.Info("Selected document has changed: {0}", new []{ SelectedDocument });
+				log.Info("Selected document has changed: {0}", new[] { SelectedDocument });
 				Update();
 			}
 		}
-		
+
+		IReadOnlyCollection<ProjectDocument> _Documents;
+
 		public IReadOnlyCollection<ProjectDocument> Documents
 		{
-			get;
-			private set;
+			get { return _Documents; }
+			private set { SetValue(ref _Documents, value); }
 		}
 
 		private ProjectDocument _SelectedDocument;

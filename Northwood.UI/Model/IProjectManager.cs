@@ -11,5 +11,7 @@ namespace Northwood.UI
 		void CreateNewProject();
 
 		ProjectRoot CurrentProject { get; }
+
+		ProjectBlockDiagram AddBlockDiagram();
 	}
 }
