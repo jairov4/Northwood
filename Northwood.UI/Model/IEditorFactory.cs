@@ -7,6 +7,6 @@ namespace Northwood.UI
 {
 	public interface IEditorFactory
 	{
-		void EditDocument(ProjectDocument document, bool reuse);
+		IView EditDocument(ProjectDocument document, bool reuse);
 	}
 }

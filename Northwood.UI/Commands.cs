@@ -10,9 +10,5 @@ namespace Northwood.UI
 		public static readonly string FSMDocument = "FsmDocument";
 		public static readonly string BlockDiagramDocument = "BlockDiagramDocument";
 		public static readonly string Testbench = "Testbench";
-
-		static Commands()
-		{
-		}
 	}
 }

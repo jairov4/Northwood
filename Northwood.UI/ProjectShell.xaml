@@ -99,7 +99,12 @@
 				</TabItem.Header>
 			</TabItem>
 			<TabItem Header="GENERAL">
-				<StackPanel Orientation="Horizontal">
+				<StackPanel Orientation="Horizontal" UseLayoutRounding="False">
+					<StackPanel.Resources>
+						<Style TargetType="Image">
+							<Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />						
+						</Style>
+					</StackPanel.Resources>
 					<HeaderedItemsControl Header="Nuevo" x:Name="rgNew">
 						<Button x:Name="button" Command="New" CommandParameter="{x:Static UI:Commands.BlockDiagramDocument}">
 							<DockPanel>

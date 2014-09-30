@@ -18,7 +18,7 @@ namespace Northwood.UI
 
 		public void EditDocument(ProjectDocument document, bool reuse)
 		{
-
+			
 		}
 	}
 }

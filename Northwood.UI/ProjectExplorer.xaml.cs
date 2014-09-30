@@ -24,7 +24,7 @@ namespace Northwood.UI
 		{
 			InitializeComponent();
 		}
-		
+
 		public ProjectExplorerViewModel ViewModel
 		{
 			get { return DataContext as ProjectExplorerViewModel; }
@@ -33,14 +33,13 @@ namespace Northwood.UI
 
 		IViewModel IView.ViewModel
 		{
-			get
-			{
-				return ViewModel;
-			}
-			set
-			{
-				ViewModel = (ProjectExplorerViewModel)value;
-			}
+			get { return ViewModel; }
+			set { ViewModel = value as ProjectExplorerViewModel; }
+		}
+
+		private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			ApplicationCommands.Open.Execute(ViewModel.SelectedDocument, sender as IInputElement);
 		}
 	}
 }

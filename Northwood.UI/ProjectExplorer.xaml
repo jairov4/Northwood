@@ -4,10 +4,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-			 UI:ViewModelResolver.Autowire="True"
+             mc:Ignorable="d" UI:ViewModelResolver.Autowire="True"
              d:DesignHeight="300" d:DesignWidth="300">
 	<DockPanel>
-		<ListBox ItemsSource="{Binding Documents}" SelectedItem="{Binding SelectedDocument}" />
+		<ListBox ItemsSource="{Binding Documents}" SelectedItem="{Binding SelectedDocument}" 
+				 MouseDoubleClick="ListBox_MouseDoubleClick">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Horizontal">
+						<Image Height="16" Width="16" Source="Images/Diagram_16XLG.png" />
+						<TextBlock Margin="4,0,0,0" Text="{Binding Name}" />
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+			<ListBox.ContextMenu>
+				<ContextMenu>
+					<MenuItem Header="Open" />
+					<Separator />
+					<MenuItem Header="Rename" />
+					<MenuItem Header="Set as Top Level" />
+				</ContextMenu>
+			</ListBox.ContextMenu>
+		</ListBox>
 	</DockPanel>
 </UserControl>

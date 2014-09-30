@@ -19,11 +19,23 @@ namespace Northwood.UI
 	/// <summary>
 	/// Lógica de interacción para Backstage.xaml
 	/// </summary>
-	public partial class Backstage : UserControl
+	public partial class Backstage : UserControl, IView
 	{
 		public Backstage()
 		{
 			InitializeComponent();
+		}
+
+		public BackstageViewModel ViewModel
+		{
+			get { return DataContext as BackstageViewModel; }
+			set { DataContext = value; }			
+		}
+
+		IViewModel IView.ViewModel
+		{
+			get { return ViewModel; }
+			set { ViewModel = value as BackstageViewModel; }
 		}
 	}
 }

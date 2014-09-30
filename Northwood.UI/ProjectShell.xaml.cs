@@ -34,11 +34,10 @@ namespace Northwood.UI
 			set { DataContext = value; }
 		}
 
-
 		IViewModel IView.ViewModel
 		{
 			get { return this.ViewModel; }
-			set { this.ViewModel = (ProjectShellViewModel)value; }
+			set { this.ViewModel = value as ProjectShellViewModel; }
 		}
 	}
 }

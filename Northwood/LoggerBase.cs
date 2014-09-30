@@ -15,7 +15,7 @@ namespace Northwood
 		{
 			if (p == null) p = new object[0];
 			var msgF = string.Format(msg, p);
-			var prt = string.Format("INFO  {1}({2}): {3} - {0}", msg, Path.GetFileName(filename), lineNumber, member);
+			var prt = string.Format("INFO  {1}({2}): {3} - {0}", msgF, Path.GetFileName(filename), lineNumber, member);
 			Log(prt);
 		}
 
@@ -23,7 +23,7 @@ namespace Northwood
 		{
 			if (p == null) p = new object[0];
 			var msgF = string.Format(msg, p);
-			var prt = string.Format("ERROR {1}({2}): {3} - {0}", msg, Path.GetFileName(filename), lineNumber, member);
+			var prt = string.Format("ERROR {1}({2}): {3} - {0}", msgF, Path.GetFileName(filename), lineNumber, member);
 			Log(prt);
 		}
 
@@ -31,7 +31,7 @@ namespace Northwood
 		{
 			if (p == null) p = new object[0];
 			var msgF = string.Format(msg, p);
-			var prt = string.Format("ERROR {1}({2}): {3} - {0}", msg, Path.GetFileName(filename), lineNumber, member);
+			var prt = string.Format("ERROR {1}({2}): {3} - {0}", msgF, Path.GetFileName(filename), lineNumber, member);
 			Log(prt);
 		}
 
@@ -39,7 +39,7 @@ namespace Northwood
 		{
 			if (p == null) p = new object[0];
 			var msgF = string.Format(msg, p);
-			var prt = string.Format("WARN  {1}({2}): {3} - {0}", msg, Path.GetFileName(filename), lineNumber, member);
+			var prt = string.Format("WARN  {1}({2}): {3} - {0}", msgF, Path.GetFileName(filename), lineNumber, member);
 			Log(prt);
 		}
 
@@ -47,7 +47,7 @@ namespace Northwood
 		{
 			if (p == null) p = new object[0];
 			var msgF = string.Format(msg, p);
-			var prt = string.Format("WARN  {1}({2}): {3} - {0}", msg, Path.GetFileName(filename), lineNumber, member);
+			var prt = string.Format("WARN  {1}({2}): {3} - {0}", msgF, Path.GetFileName(filename), lineNumber, member);
 			Log(prt);
 		}
 
@@ -55,7 +55,7 @@ namespace Northwood
 		{
 			if (p == null) p = new object[0];
 			var msgF = string.Format(msg, p);
-			var prt = string.Format("DEBUG {1}({2}): {3} - {0}", msg, Path.GetFileName(filename), lineNumber, member);
+			var prt = string.Format("DEBUG {1}({2}): {3} - {0}", msgF, Path.GetFileName(filename), lineNumber, member);
 			Log(prt);
 		}
 

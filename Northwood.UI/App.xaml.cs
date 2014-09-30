@@ -26,11 +26,10 @@ namespace Northwood.UI
 			Bootstrap(builder, wnd);
 
 			var container = builder.Build();
+			ViewModelResolver.Container = container;
 
 			var cmd = container.Resolve<UIAppCommandImpl>();
 			cmd.RegisterCommandHandlers();
-
-			ViewModelResolver.Container = container;
 
 			MainWindow = wnd;
 			wnd.Show();
@@ -45,7 +44,8 @@ namespace Northwood.UI
 			builder.RegisterInstance(wnd).As<Window>().SingleInstance();
 
 			builder.RegisterType<ProjectShellViewModel>().As<IProjectShell>().As<ProjectShellViewModel>().SingleInstance();
-			builder.RegisterType<ProjectExplorerViewModel>();			
+			builder.RegisterType<ProjectExplorerViewModel>();
+			builder.RegisterType<BackstageViewModel>();
 		}
 	}
 }
