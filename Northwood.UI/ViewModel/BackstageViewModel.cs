@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace Northwood.UI
 {
-	public class BackstageViewModel : ViewModel
+	public class BackstageViewModel : ViewModelBase
 	{
 		public BackstageViewModel()
 		{

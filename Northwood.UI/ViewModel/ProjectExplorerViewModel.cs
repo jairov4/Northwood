@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Northwood.UI
 {
-	public class ProjectExplorerViewModel : ViewModel
+	public class ProjectExplorerViewModel : ToolPaneViewModelBase
 	{
 		readonly ILogger log;
 		readonly IProjectManager projectManager;
@@ -20,6 +20,7 @@ namespace Northwood.UI
 			projectManager = manager;
 			projectManager.PropertyChanged += projectManager_PropertyChanged;
 			Update();
+			Title = "Project Explorer";
 		}
 
 		private void Update()

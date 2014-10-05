@@ -7,12 +7,17 @@
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"  
 			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 			 xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"  
-			 x:Class="Northwood.UI.ProjectShell"
+			 x:Class="Northwood.UI.ProjectShellView"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="1000"
 			 TextElement.FontSize="20" TextElement.Foreground="#002090"
 			 UI:ViewModelResolver.Autowire="True"
 			 >
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<UI:ViewModelResolver x:Key="vmConverter" />
+		</ResourceDictionary>
+	</UserControl.Resources>
 
 	<Grid Background="#eee">
 		<VisualStateManager.VisualStateGroups>
@@ -300,21 +305,22 @@
 				</StackPanel>
 			</TabItem>
 		</TabControl>
-		<xcad:DockingManager Grid.Row="1" x:Name="dockingManager">
+		<xcad:DockingManager Grid.Row="1" x:Name="dockingManager"
+							 AnchorablesSource="{Binding Tools}"
+							 DocumentsSource="{Binding EditorManager.Documents}">
+			<xcad:DockingManager.LayoutItemTemplate>
+				<DataTemplate>
+					<ContentControl Content="{Binding Converter={StaticResource vmConverter}}" />
+				</DataTemplate>
+			</xcad:DockingManager.LayoutItemTemplate>
+			
 			<xcad:LayoutRoot x:Name="dockingLayoutRoot">
 				<xcad:LayoutPanel Orientation="Horizontal">
-					<xcad:LayoutAnchorablePane DockWidth="300">
-						<xcad:LayoutAnchorable Title="Explorador de Proyecto" ContentId="fds">
-							<UI:ProjectExplorer />
-						</xcad:LayoutAnchorable>
-						<xcad:LayoutAnchorable Title="Jerarquia"/>
-					</xcad:LayoutAnchorablePane>
-					<xcad:LayoutDocumentPaneGroup>
-						<xcad:LayoutDocumentPane x:Name="dockingDocumentPane"/>
-					</xcad:LayoutDocumentPaneGroup>
+					<xcad:LayoutAnchorablePane DockWidth="300" />
+					<xcad:LayoutDocumentPane />
 				</xcad:LayoutPanel>
 			</xcad:LayoutRoot>
 		</xcad:DockingManager>
-		<UI:Backstage x:Name="backstage" Grid.Row="1" />
+		<UI:BackstageView x:Name="backstage" Grid.Row="1" />
 	</Grid>
 </UserControl>

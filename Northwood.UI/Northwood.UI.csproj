@@ -103,21 +103,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AutowireViewModel.cs" />
-    <Compile Include="EditorFactory.cs" />
+    <Compile Include="ViewModelResolver.cs" />
+    <Compile Include="BasicEditorsFactory.cs" />
+    <Compile Include="Diagram.cs" />
+    <Compile Include="ViewModel\BlockDiagramViewModel.cs" />
+    <Compile Include="ViewModel\IToolsPaneViewModel.cs" />
+    <Compile Include="Model\EditorManager.cs" />
     <Compile Include="LoggerTrace.cs" />
+    <Compile Include="ViewModel\ToolPaneViewModelBase.cs" />
     <Compile Include="UIAppCommandImpl.cs" />
     <Compile Include="ViewModel\BackstageViewModel.cs" />
-    <Compile Include="Model\IEditorFactory.cs" />
-    <Compile Include="Model\IProjectShell.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="ViewModel\ProjectExplorerViewModel.cs" />
     <Compile Include="ViewModel\ProjectShellViewModel.cs" />
-    <Page Include="Backstage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Block.xaml">
+    <Page Include="BackstageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -133,36 +132,36 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Backstage.xaml.cs">
-      <DependentUpon>Backstage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Block.xaml.cs">
-      <DependentUpon>Block.xaml</DependentUpon>
+    <Compile Include="BackstageView.xaml.cs">
+      <DependentUpon>BackstageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="BlockDiagramView.xaml.cs">
       <DependentUpon>BlockDiagramView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\IProjectManager.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ProjectExplorer.xaml">
+    <Page Include="ProjectExplorerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ProjectShell.xaml">
+    <Page Include="ProjectShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProjectExplorer.xaml.cs">
-      <DependentUpon>ProjectExplorer.xaml</DependentUpon>
+    <Compile Include="ProjectExplorerView.xaml.cs">
+      <DependentUpon>ProjectExplorerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\ProjectManager.cs" />
-    <Compile Include="ProjectShell.xaml.cs">
-      <DependentUpon>ProjectShell.xaml</DependentUpon>
+    <Compile Include="ProjectShellView.xaml.cs">
+      <DependentUpon>ProjectShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

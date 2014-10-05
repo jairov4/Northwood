@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Northwood.UI
 {
 	/// <summary>
-	/// Lógica de interacción para ProjectExplorer.xaml
+	/// Lógica de interacción para ProjectExplorerView.xaml
 	/// </summary>
-	public partial class ProjectExplorer : UserControl, IView
+	public partial class ProjectExplorerView : UserControl, IView
 	{
-		public ProjectExplorer()
+		public ProjectExplorerView()
 		{
 			InitializeComponent();
 		}

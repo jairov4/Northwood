@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
@@ -13,29 +14,30 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xceed.Wpf.AvalonDock.Layout;
 
 namespace Northwood.UI
 {
 	/// <summary>
-	/// Lógica de interacción para Backstage.xaml
+	/// Lógica de interacción para ProjectShellView.xaml
 	/// </summary>
-	public partial class Backstage : UserControl, IView
+	public partial class ProjectShellView : UserControl, IView
 	{
-		public Backstage()
+		public ProjectShellView()
 		{
 			InitializeComponent();
 		}
 
-		public BackstageViewModel ViewModel
+		public ProjectShellViewModel ViewModel
 		{
-			get { return DataContext as BackstageViewModel; }
-			set { DataContext = value; }			
+			get { return DataContext as ProjectShellViewModel; }
+			set { DataContext = value; }
 		}
 
 		IViewModel IView.ViewModel
 		{
-			get { return ViewModel; }
-			set { ViewModel = value as BackstageViewModel; }
+			get { return this.ViewModel; }
+			set { this.ViewModel = value as ProjectShellViewModel; }
 		}
 	}
 }

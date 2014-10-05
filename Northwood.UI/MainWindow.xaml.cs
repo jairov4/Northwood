@@ -16,6 +16,6 @@ namespace Northwood.UI
 			InitializeComponent();
 		}
 
-		public ProjectShell Shell { get { return shell; } }
+		public ProjectShellView Shell { get { return shell; } }
 	}
 }

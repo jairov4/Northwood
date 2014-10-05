@@ -3,5 +3,5 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		UseLayoutRounding="True"
         Title="Northwood Design Suite" Height="500" Width="900" FontSize="24" FontFamily="Segoe UI Light" Background="#ccc">
-	<UI:ProjectShell x:Name="shell" />
+	<UI:ProjectShellView x:Name="shell" />
 </Window>

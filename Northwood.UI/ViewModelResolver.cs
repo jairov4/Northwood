@@ -1,20 +1,22 @@
 ﻿using Autofac;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 
 namespace Northwood.UI
 {
 	/// <summary>
 	/// Resolves a ViewModel instance in same Assembly and same namespace for IView
-	/// which Autowire property is setted up to true.
+	/// which Autowire property is setted up to true. It offers ViewModel to View conversion
+	/// to be used in XAML too.
 	/// </summary>
-	public class ViewModelResolver : DependencyObject
+	public class ViewModelResolver : DependencyObject, IValueConverter
 	{
-
 		private static IContainer container;
 
 		public static IContainer Container
@@ -74,13 +76,34 @@ namespace Northwood.UI
 			}
 		}
 
-		private static IViewModel ResolveViewModel(IView view)
+		public static IViewModel ResolveViewModel(IView view)
 		{
 			var type = view.GetType();
-			var className = type.FullName + "ViewModel";
+			var className = type.FullName + "Model";
 			var typeVm = type.Assembly.GetType(className);
 			var vm = container.Resolve(typeVm) as IViewModel;
 			return vm;
+		}
+
+		public static IView ResolveView(IViewModel model)
+		{
+			var type = model.GetType();
+			var className = type.FullName.Remove(type.FullName.Length - 5);
+			var typeVm = type.Assembly.GetType(className);
+			var vm = container.Resolve(typeVm) as IView;
+			return vm;
+		}
+
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			if (value is IViewModel) return ViewModelResolver.ResolveView(value as IViewModel);
+			return value;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			if (value is IView) return ViewModelResolver.ResolveViewModel(value as IView);
+			return value;
 		}
 	}
 }

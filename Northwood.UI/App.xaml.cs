@@ -38,14 +38,18 @@ namespace Northwood.UI
 		private void Bootstrap(ContainerBuilder builder, Window wnd)
 		{
 			builder.RegisterType<ProjectManager>().As<IProjectManager>().SingleInstance();
-			builder.RegisterType<EditorFactory>().As<IEditorFactory>().SingleInstance();			
+			builder.RegisterType<EditorManager>().As<IEditorManager>().SingleInstance();			
 			builder.RegisterType<UIAppCommandImpl>().SingleInstance();
 			builder.RegisterType<LoggerTrace>().As<ILogger>().SingleInstance();
+			builder.RegisterType<BasicEditorsFactory>().As<IEditorFactory>().SingleInstance();
 			builder.RegisterInstance(wnd).As<Window>().SingleInstance();
 
-			builder.RegisterType<ProjectShellViewModel>().As<IProjectShell>().As<ProjectShellViewModel>().SingleInstance();
-			builder.RegisterType<ProjectExplorerViewModel>();
+			builder.RegisterType<ProjectShellViewModel>().As<ProjectShellViewModel>().As<IProjectShell>().SingleInstance();
+			builder.RegisterType<ProjectExplorerViewModel>().As <ProjectExplorerViewModel>().As<IToolPaneViewModel>();
 			builder.RegisterType<BackstageViewModel>();
+			builder.RegisterType<BlockDiagramViewModel>();
+
+			builder.RegisterType<ProjectExplorerView>();
 		}
 	}
 }

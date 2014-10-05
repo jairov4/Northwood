@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Northwood.UI
 		ProjectEditor, Backstage
 	}
 
-	public class ProjectShellViewModel : ViewModel, IProjectShell
+	public class ProjectShellViewModel : ViewModelBase, IProjectShell
 	{
 		private ShellState _State;
 
@@ -30,17 +31,33 @@ namespace Northwood.UI
 			get { return _Manager; }
 			private set { SetValue(ref _Manager, value); }
 		}
+
+		IEditorManager _EditorManager;
+
+		public IEditorManager EditorManager
+		{
+			get { return _EditorManager; }
+			private set { SetValue(ref _EditorManager, value); }
+		}
+
+		ObservableCollection<IToolPaneViewModel> _Tools;
+		public ObservableCollection<IToolPaneViewModel> Tools
+		{
+			get { return _Tools; }
+		}
 		
 		public void CloseBackstage()
 		{
 			State = ShellState.ProjectEditor;
 		}
 
-		public ProjectShellViewModel(IProjectManager manager)
+		public ProjectShellViewModel(IProjectManager manager, IEditorManager eManager, IEnumerable<IToolPaneViewModel> tools)
 		{
 			_Manager = manager;
+			_EditorManager = eManager;
 			State = ShellState.Backstage;
-			manager.PropertyChanged += manager_PropertyChanged;			
+			_Tools = new ObservableCollection<IToolPaneViewModel>(tools);
+			manager.PropertyChanged += manager_PropertyChanged;
 		}
 
 		void manager_PropertyChanged(object sender, PropertyChangedEventArgs e)

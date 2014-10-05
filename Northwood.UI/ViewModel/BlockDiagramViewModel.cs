@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Northwood.UI
 {
-	public interface IProjectShell
+	public class BlockDiagramViewModel : ViewModelBase
 	{
-		void CloseBackstage();
 	}
 }

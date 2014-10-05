@@ -7,7 +7,7 @@ using System.Windows.Input;
 namespace Northwood.UI
 {
 	[Export(typeof(IProjectManager))]
-	public class ProjectManager : ViewModel, IProjectManager
+	public class ProjectManager : ViewModelBase, IProjectManager
 	{
 		protected readonly ILogger log;
 
@@ -33,6 +33,7 @@ namespace Northwood.UI
 		}
 
 		ProjectRoot _CurrentProject;
+
 		public ProjectRoot CurrentProject
 		{
 			get { return _CurrentProject; }

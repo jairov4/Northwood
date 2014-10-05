@@ -36,7 +36,12 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IEditor.cs" />
+    <Compile Include="IEditorManager.cs" />
+    <Compile Include="IEditorFactory.cs" />
     <Compile Include="ILogger.cs" />
+    <Compile Include="IProjectManager.cs" />
+    <Compile Include="IProjectShell.cs" />
     <Compile Include="IView.cs" />
     <Compile Include="IViewModel.cs" />
     <Compile Include="LoggerBase.cs" />
@@ -45,7 +50,7 @@
     <Compile Include="ProjectRoot.cs" />
     <Compile Include="ProjectDocument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel.cs" />
+    <Compile Include="ViewModelBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
