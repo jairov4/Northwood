@@ -17,8 +17,7 @@ namespace Northwood.UI
 		{
 			if(j is ProjectBlockDiagram)
 			{
-				var ed = new BlockDiagramView();
-				ed.DataContext = j;
+				var ed = new BlockDiagramViewModel();
 				return ed;
 			}
 			return null;

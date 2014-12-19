@@ -7,13 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900">
 	<UI:Diagram Background="White">
-		<UI:DiagramItem Y="230" X="23" Background="Aqua" Padding="10">
-			<UI:DiagramItem.Header>
-				sdf
-			</UI:DiagramItem.Header>
-			<UI:DiagramItemPort Header="PortType" Content="A" />
-			<UI:DiagramItemPort Header="PortType" Content="B" />
-			<UI:DiagramItemPort Header="PortType" Content="C" />
+		<UI:DiagramItem Y="230" X="23" Background="Aqua" Padding="3">
+			<UI:DiagramItem.Items>
+				<UI:DiagramItemPort Header="PortType" Content="A"  />
+				<UI:DiagramItemPort Header="PortType" Content="B" UseLayoutRounding="True" />
+			</UI:DiagramItem.Items>
+			<TextBlock Text="Hola" FontSize="30" FontFamily="Segoe UI Light Italic" />
 		</UI:DiagramItem>
 	</UI:Diagram>
 </UserControl>

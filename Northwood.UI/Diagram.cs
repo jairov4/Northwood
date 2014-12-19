@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,11 +24,16 @@ namespace Northwood.UI
 		protected override DependencyObject GetContainerForItemOverride() { return new DiagramItem(); }
 	}
 
-	public class DiagramItem : HeaderedItemsControl
+	public class DiagramItem : ContentControl
 	{
 		static DiagramItem()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(DiagramItem), new FrameworkPropertyMetadata(typeof(DiagramItem)));
+		}
+
+		public DiagramItem()
+		{
+			_Items.CollectionChanged += _Items_CollectionChanged;
 		}
 
 		public double X
@@ -44,7 +51,7 @@ namespace Northwood.UI
 			var This = d as DiagramItem;
 			Canvas.SetLeft(This, (double)e.NewValue);
 		}
-		
+
 		public double Y
 		{
 			get { return (double)GetValue(YProperty); }
@@ -68,13 +75,57 @@ namespace Northwood.UI
 			set { SetValue(ZProperty, value); }
 		}
 
+
+
+		public Thickness ContentMargin
+		{
+			get { return (Thickness)GetValue(ContentMarginProperty); }
+			set { SetValue(ContentMarginProperty, value); }
+		}
+
+		// Using a DependencyProperty as the backing store for ContentMargin.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty ContentMarginProperty =
+			DependencyProperty.Register("ContentMargin", typeof(Thickness), typeof(DiagramItem), new FrameworkPropertyMetadata(new Thickness(5)));
+
+
 		// Using a DependencyProperty as the backing store for Z.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty ZProperty =
 			DependencyProperty.Register("Z", typeof(int), typeof(DiagramItem), new FrameworkPropertyMetadata(0));
 
-		protected override bool IsItemItsOwnContainerOverride(object item) { return item is DiagramItemPort; }
+		public override void OnApplyTemplate()
+		{
+			base.OnApplyTemplate();
+			if (Template == null) return;
+			var pnlLeft = Template.FindName("pnlLeft", this) as Panel;
+			var pnlRight = Template.FindName("pnlRight", this) as Panel;
+			if (pnlLeft == null) return;
+			foreach (UIElement a in Items)
+			{
+				pnlLeft.Children.Add(a);
+			}
+		}
 
-		protected override DependencyObject GetContainerForItemOverride() { return new DiagramItemPort(); }
+		void _Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			if (Template == null) return;
+			var pnlLeft = Template.FindName("pnlLeft", this) as Panel;
+			var pnlRight = Template.FindName("pnlRight", this) as Panel;
+			if (pnlLeft == null) return;
+			foreach (UIElement a in e.OldItems)
+			{
+				pnlLeft.Children.Remove(a);
+				pnlRight.Children.Remove(a);
+			}
+			foreach (UIElement a in e.NewItems)
+			{
+				pnlLeft.Children.Add(a);
+			}
+		}
+
+		ObservableCollection<UIElement> _Items = new ObservableCollection<UIElement>();
+
+		public ObservableCollection<UIElement> Items { get { return _Items; } }
+
 	}
 
 	public class DiagramItemPort : HeaderedContentControl

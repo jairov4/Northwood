@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Northwood
 {
-	public interface IEditor
+	public interface IEditor : IViewModel
 	{
+		string Title { get; }
 	}
 }

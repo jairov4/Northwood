@@ -50,6 +50,7 @@ namespace Northwood.UI
 			builder.RegisterType<BlockDiagramViewModel>();
 
 			builder.RegisterType<ProjectExplorerView>();
+			builder.RegisterType<BlockDiagramView>();
 		}
 	}
 }

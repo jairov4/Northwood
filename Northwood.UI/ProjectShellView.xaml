@@ -41,11 +41,11 @@
 				</VisualState>
 			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
-		
+
 		<VisualStateManager.CustomVisualStateManager>
 			<ei:ExtendedVisualStateManager/>
 		</VisualStateManager.CustomVisualStateManager>
-		
+
 		<i:Interaction.Behaviors>
 			<ei:DataStateBehavior Binding="{Binding State}" Value="ProjectEditor" TrueState="ProjectEditorActiveState" FalseState="BackstageActiveState" />
 		</i:Interaction.Behaviors>
@@ -107,7 +107,7 @@
 				<StackPanel Orientation="Horizontal" UseLayoutRounding="False">
 					<StackPanel.Resources>
 						<Style TargetType="Image">
-							<Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />						
+							<Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
 						</Style>
 					</StackPanel.Resources>
 					<HeaderedItemsControl Header="Nuevo" x:Name="rgNew">
@@ -313,7 +313,11 @@
 					<ContentControl Content="{Binding Converter={StaticResource vmConverter}}" />
 				</DataTemplate>
 			</xcad:DockingManager.LayoutItemTemplate>
-			
+			<xcad:DockingManager.LayoutItemContainerStyle>
+				<Style TargetType="xcad:LayoutItem">
+					<Setter Property="Title" Value="{Binding Model.Title}" />
+				</Style>
+			</xcad:DockingManager.LayoutItemContainerStyle>
 			<xcad:LayoutRoot x:Name="dockingLayoutRoot">
 				<xcad:LayoutPanel Orientation="Horizontal">
 					<xcad:LayoutAnchorablePane DockWidth="300" />

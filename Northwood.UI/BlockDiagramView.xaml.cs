@@ -18,7 +18,7 @@ namespace Northwood.UI
 	/// <summary>
 	/// Lógica de interacción para BlockDiagramEditor.xaml
 	/// </summary>
-	public partial class BlockDiagramView : UserControl, IEditor, IView
+	public partial class BlockDiagramView : UserControl, IView
 	{
 		public BlockDiagramView()
 		{
@@ -27,14 +27,8 @@ namespace Northwood.UI
 
 		public IViewModel ViewModel
 		{
-			get
-			{
-				return DataContext as IViewModel;
-			}
-			set
-			{
-				DataContext = value;
-			}
+			get { return DataContext as IViewModel; }
+			set { DataContext = value; }
 		}
 	}
 }
