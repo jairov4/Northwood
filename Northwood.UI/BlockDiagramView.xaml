@@ -5,14 +5,39 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:UI="clr-namespace:Northwood.UI"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="900">
-	<UI:Diagram Background="White">
-		<UI:DiagramItem Y="230" X="23" Background="Aqua" Padding="3">
-			<UI:DiagramItem.Items>
-				<UI:DiagramItemPort Header="PortType" Content="A"  />
-				<UI:DiagramItemPort Header="PortType" Content="B" UseLayoutRounding="True" />
-			</UI:DiagramItem.Items>
-			<TextBlock Text="Hola" FontSize="30" FontFamily="Segoe UI Light Italic" />
+             d:DesignHeight="400" d:DesignWidth="900" FontFamily="Segoe UI Light" FontSize="22">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<Style TargetType="UI:DiagramItem">
+				<Setter Property="Background" Value="#FF64C7FF"></Setter>
+				<Setter Property="VerticalContentAlignment" Value="Center" />
+				<Setter Property="ContentMargin" Value="10"></Setter>
+				<Setter Property="Padding" Value="5"></Setter>
+				<Setter Property="Foreground" Value="White"></Setter>
+				<Setter Property="BorderBrush" Value="#FF8FD7FF"></Setter>
+				<Setter Property="BorderThickness" Value="2"></Setter>
+				<Setter Property="FontFamily" Value="Segoe UI Italic"></Setter>
+				<Setter Property="FontSize" Value="30"></Setter>
+			</Style>
+			<Style TargetType="UI:DiagramItemPort">
+				<Setter Property="FontFamily" Value="Segoe UI Light"></Setter>
+				<Setter Property="FontSize" Value="20"></Setter>
+			</Style>
+		</ResourceDictionary>
+	</UserControl.Resources>
+	<Canvas Background="White">
+		
+		<UI:DiagramItem Canvas.Left="100" Canvas.Top="100" Content="Multiplier">
+			<UI:DiagramItem.LeftItems>
+				<UI:DiagramItemPort Header="Prueba">A</UI:DiagramItemPort>
+				<UI:DiagramItemPort>B</UI:DiagramItemPort>
+				<UI:DiagramItemPort>clk</UI:DiagramItemPort>
+			</UI:DiagramItem.LeftItems>
+			<UI:DiagramItem.RightItems>
+				<UI:DiagramItemPort>hi</UI:DiagramItemPort>
+				<UI:DiagramItemPort>lo</UI:DiagramItemPort>
+			</UI:DiagramItem.RightItems>
 		</UI:DiagramItem>
-	</UI:Diagram>
+		
+	</Canvas>
 </UserControl>

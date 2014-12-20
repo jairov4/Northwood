@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 
 namespace Northwood.UI
 {
@@ -33,7 +36,8 @@ namespace Northwood.UI
 
 		public DiagramItem()
 		{
-			_Items.CollectionChanged += _Items_CollectionChanged;
+			LeftItems = new ObservableCollection<object>();
+			RightItems = new ObservableCollection<object>();
 		}
 
 		public double X
@@ -48,7 +52,7 @@ namespace Northwood.UI
 
 		private static void X_OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var This = d as DiagramItem;
+			var This = (DiagramItem)d;
 			Canvas.SetLeft(This, (double)e.NewValue);
 		}
 
@@ -64,18 +68,9 @@ namespace Northwood.UI
 
 		private static void Y_OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var This = d as DiagramItem;
+			var This = (DiagramItem)d;
 			Canvas.SetTop(This, (double)e.NewValue);
 		}
-
-
-		public int Z
-		{
-			get { return (int)GetValue(ZProperty); }
-			set { SetValue(ZProperty, value); }
-		}
-
-
 
 		public Thickness ContentMargin
 		{
@@ -87,44 +82,56 @@ namespace Northwood.UI
 		public static readonly DependencyProperty ContentMarginProperty =
 			DependencyProperty.Register("ContentMargin", typeof(Thickness), typeof(DiagramItem), new FrameworkPropertyMetadata(new Thickness(5)));
 
+		public int Z
+		{
+			get { return (int)GetValue(ZProperty); }
+			set { SetValue(ZProperty, value); }
+		}
 
 		// Using a DependencyProperty as the backing store for Z.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty ZProperty =
 			DependencyProperty.Register("Z", typeof(int), typeof(DiagramItem), new FrameworkPropertyMetadata(0));
 
-		public override void OnApplyTemplate()
+
+		public IList LeftItems
 		{
-			base.OnApplyTemplate();
-			if (Template == null) return;
-			var pnlLeft = Template.FindName("pnlLeft", this) as Panel;
-			var pnlRight = Template.FindName("pnlRight", this) as Panel;
-			if (pnlLeft == null) return;
-			foreach (UIElement a in Items)
-			{
-				pnlLeft.Children.Add(a);
-			}
+			get { return (IList)GetValue(LeftItemsProperty); }
+			set { SetValue(LeftItemsProperty, value); }
 		}
 
-		void _Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		// Using a DependencyProperty as the backing store for LeftItems.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty LeftItemsProperty =
+			DependencyProperty.Register("LeftItems", typeof(IList), typeof(DiagramItem), new FrameworkPropertyMetadata(null));
+
+		public IList RightItems
 		{
-			if (Template == null) return;
-			var pnlLeft = Template.FindName("pnlLeft", this) as Panel;
-			var pnlRight = Template.FindName("pnlRight", this) as Panel;
-			if (pnlLeft == null) return;
-			foreach (UIElement a in e.OldItems)
-			{
-				pnlLeft.Children.Remove(a);
-				pnlRight.Children.Remove(a);
-			}
-			foreach (UIElement a in e.NewItems)
-			{
-				pnlLeft.Children.Add(a);
-			}
+			get { return (IList)GetValue(RightItemsProperty); }
+			set { SetValue(RightItemsProperty, value); }
 		}
 
-		ObservableCollection<UIElement> _Items = new ObservableCollection<UIElement>();
+		// Using a DependencyProperty as the backing store for RightItems.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty RightItemsProperty =
+			DependencyProperty.Register("RightItems", typeof(IList), typeof(DiagramItem), new FrameworkPropertyMetadata(null));
 
-		public ObservableCollection<UIElement> Items { get { return _Items; } }
+		public DataTemplate ItemTemplate
+		{
+			get { return (DataTemplate)GetValue(ItemTemplateProperty); }
+			set { SetValue(ItemTemplateProperty, value); }
+		}
+
+		// Using a DependencyProperty as the backing store for ItemTemplate.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty ItemTemplateProperty =
+			DependencyProperty.Register("ItemTemplate", typeof(DataTemplate), typeof(DiagramItem), new FrameworkPropertyMetadata(null));
+
+		public DataTemplateSelector ItemTemplateSelector
+		{
+			get { return (DataTemplateSelector)GetValue(ItemTemplateSelectorProperty); }
+			set { SetValue(ItemTemplateSelectorProperty, value); }
+		}
+
+		// Using a DependencyProperty as the backing store for ItemTemplateSelector.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty ItemTemplateSelectorProperty =
+			DependencyProperty.Register("ItemTemplateSelector", typeof(DataTemplateSelector), typeof(DiagramItem), new FrameworkPropertyMetadata(null));
 
 	}
 

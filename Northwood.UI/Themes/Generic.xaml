@@ -46,21 +46,28 @@
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
 					Padding="{TemplateBinding Padding}"
-                    SnapsToDevicePixels="true">
-						<Grid Name="grd">							
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Name="contentLeft" Width="Auto" />
-								<ColumnDefinition Name="contentHCenter" Width="Auto" />
-								<ColumnDefinition Name="contentRight" Width="Auto" />
-							</Grid.ColumnDefinitions>
-							<ContentControl Name="cp" Grid.Column="1" Margin="{TemplateBinding ContentMargin}" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Content}" />
-							<StackPanel Name="pnlLeft" />
-							<StackPanel Name="pnlRight"  Grid.Column="2" />
-						</Grid>
+                    SnapsToDevicePixels="True">
+						<DockPanel LastChildFill="True">
+							<ItemsControl ItemTemplate="{TemplateBinding ItemTemplate}" 
+										  ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+										  DockPanel.Dock="Left" 
+										  ItemsSource="{TemplateBinding LeftItems}">
+							</ItemsControl>
+							<ItemsControl ItemTemplate="{TemplateBinding ItemTemplate}" 
+										  ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+										  DockPanel.Dock="Right" 
+										  ItemsSource="{TemplateBinding RightItems}">
+							</ItemsControl>
+							<Border Padding="{TemplateBinding ContentMargin}" 
+									VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+									HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+								<ContentPresenter></ContentPresenter>
+							</Border>
+						</DockPanel>
 					</Border>
 				</ControlTemplate>
 			</Setter.Value>
-		</Setter>		
+		</Setter>
 	</Style>
 	
 	<Style TargetType="{x:Type local:DiagramItemPort}">
@@ -73,7 +80,8 @@
                     BorderThickness="{TemplateBinding BorderThickness}"
 					Padding="{TemplateBinding Padding}"
                     SnapsToDevicePixels="true">
-						<DockPanel>
+						<DockPanel VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+								   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
 							<ContentPresenter Content="{TemplateBinding Header}" />
 							<ContentPresenter DockPanel.Dock="Left" />
 						</DockPanel>
