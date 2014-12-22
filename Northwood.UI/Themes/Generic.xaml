@@ -2,19 +2,26 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:UI="clr-namespace:Northwood.UI"
 					xmlns:local="clr-namespace:Northwood.UI">
-	
+
 	<Style TargetType="{x:Type local:Diagram}">
+		<Setter Property="Background" Value="White"></Setter>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:Diagram}">
 					<Border Name="Bd"
-                    Background="{TemplateBinding Background}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
 					Padding="{TemplateBinding Padding}"
                     SnapsToDevicePixels="true">
-						<ScrollViewer Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Focusable="false">
-							<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+						<ScrollViewer Padding="{TemplateBinding Padding}" 
+									  HorizontalScrollBarVisibility="Auto"
+									  VerticalScrollBarVisibility="Auto" 
+									  Focusable="False">
+							<Border HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="Gray" BorderThickness="2">
+								<Grid Name="content" Background="{TemplateBinding Background}">
+									<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+								</Grid>
+							</Border>
 						</ScrollViewer>
 					</Border>
 					<ControlTemplate.Triggers>
@@ -31,45 +38,53 @@
 		<Setter Property="ItemsPanel">
 			<Setter.Value>
 				<ItemsPanelTemplate>
-					<Canvas />
+					<Canvas Width="1500" Height="1500" />
 				</ItemsPanelTemplate>
 			</Setter.Value>
 		</Setter>
 	</Style>
-	
+
 	<Style TargetType="{x:Type local:DiagramItem}">
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:DiagramItem}">
-					<Border Name="Bd" Focusable="True"
+					<Grid>
+						<Border Name="Bd" Focusable="True"
                     Background="{TemplateBinding Background}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
 					Padding="{TemplateBinding Padding}"
                     SnapsToDevicePixels="True">
-						<DockPanel LastChildFill="True">
-							<ItemsControl ItemTemplate="{TemplateBinding ItemTemplate}" 
+							<DockPanel LastChildFill="True">
+								<ItemsControl ItemTemplate="{TemplateBinding ItemTemplate}" 
 										  ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}"
 										  DockPanel.Dock="Left" 
 										  ItemsSource="{TemplateBinding LeftItems}">
-							</ItemsControl>
-							<ItemsControl ItemTemplate="{TemplateBinding ItemTemplate}" 
+								</ItemsControl>
+								<ItemsControl ItemTemplate="{TemplateBinding ItemTemplate}" 
 										  ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}"
 										  DockPanel.Dock="Right" 
 										  ItemsSource="{TemplateBinding RightItems}">
-							</ItemsControl>
-							<Border Padding="{TemplateBinding ContentMargin}" 
+								</ItemsControl>
+								<Border Padding="{TemplateBinding ContentMargin}" 
 									VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
 									HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
-								<ContentPresenter></ContentPresenter>
-							</Border>
-						</DockPanel>
-					</Border>
+									<ContentPresenter></ContentPresenter>
+								</Border>
+							</DockPanel>
+						</Border>
+						<Rectangle Name="selectBorder" Visibility="Hidden" StrokeThickness="2" Stroke="Tomato" Margin="1" StrokeDashArray="4 5" />
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsSelected" Value="True">
+							<Setter TargetName="selectBorder" Property="Visibility" Value="Visible"></Setter>
+						</Trigger>
+					</ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
 	</Style>
-	
+
 	<Style TargetType="{x:Type local:DiagramItemPort}">
 		<Setter Property="Template">
 			<Setter.Value>
@@ -90,5 +105,5 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-	
+
 </ResourceDictionary>

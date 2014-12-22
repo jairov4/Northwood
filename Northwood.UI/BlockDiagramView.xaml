@@ -25,9 +25,8 @@
 			</Style>
 		</ResourceDictionary>
 	</UserControl.Resources>
-	<Canvas Background="White">
-		
-		<UI:DiagramItem Canvas.Left="100" Canvas.Top="100" Content="Multiplier">
+	<UI:Diagram Background="White">
+		<UI:DiagramItem X="100" Y="110" Content="Multiplier">
 			<UI:DiagramItem.LeftItems>
 				<UI:DiagramItemPort Header="Prueba">A</UI:DiagramItemPort>
 				<UI:DiagramItemPort>B</UI:DiagramItemPort>
@@ -38,6 +37,5 @@
 				<UI:DiagramItemPort>lo</UI:DiagramItemPort>
 			</UI:DiagramItem.RightItems>
 		</UI:DiagramItem>
-		
-	</Canvas>
+	</UI:Diagram>
 </UserControl>
