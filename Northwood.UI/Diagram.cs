@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -15,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using Microsoft.Expression.Interactivity.Layout;
 
 namespace Northwood.UI
 {
@@ -33,11 +32,6 @@ namespace Northwood.UI
 		protected override DependencyObject GetContainerForItemOverride()
 		{
 			return new DiagramItem();
-		}
-
-		public void NotifyItemClicked(DiagramItem diagramItem)
-		{
-			ToggleSelect(diagramItem);
 		}
 
 		private void ToggleSelect(DiagramItem diagramItem)
@@ -59,6 +53,12 @@ namespace Northwood.UI
 			BeginUpdateSelectedItems();
 			items.ForEach(a => SelectedItems.Add(ItemContainerGenerator.ItemFromContainer(a)));
 			EndUpdateSelectedItems();
+
+			items.ForEach(x =>
+			{
+				var adornerLayer = AdornerLayer.GetAdornerLayer(x);
+				adornerLayer.Add(new SimpleCircleAdorner(x));
+			});
 		}
 
 		private void Select(DiagramItem item)
@@ -73,6 +73,20 @@ namespace Northwood.UI
 			BeginUpdateSelectedItems();
 			SelectedItems.Remove(ItemContainerGenerator.ItemFromContainer(item));
 			EndUpdateSelectedItems();
+
+			var adornerLayer = AdornerLayer.GetAdornerLayer(item);
+			var adorners = adornerLayer.GetAdorners(item);
+			adornerLayer.Remove(adorners.First(x => x is SimpleCircleAdorner));
+		}
+
+		protected override void OnTemplateChanged(ControlTemplate oldTemplate, ControlTemplate newTemplate)
+		{
+			if (_content != null)
+			{
+				_content.MouseWheel -= OnMouseWheel;
+				_content = null;
+			}
+			base.OnTemplateChanged(oldTemplate, newTemplate);
 		}
 
 		public override void OnApplyTemplate()
@@ -80,11 +94,12 @@ namespace Northwood.UI
 			base.OnApplyTemplate();
 			_content = Template.FindName("content", this) as FrameworkElement;
 			if (_content == null) return;
+			_scrollViewer = Template.FindName("scrollViewer", this) as ScrollViewer;
 
-			_content.MouseWheel += onMouseWheel;
+			_content.MouseWheel += OnMouseWheel;
 		}
 
-		void onMouseWheel(object sender, MouseWheelEventArgs e)
+		private void OnMouseWheel(object sender, MouseWheelEventArgs e)
 		{
 			if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl)) return;
 
@@ -93,159 +108,152 @@ namespace Northwood.UI
 			_content.LayoutTransform = new ScaleTransform(_scaleFactor, _scaleFactor);
 		}
 
-		private double _scaleFactor = 1.0;
-		private FrameworkElement _content;
-
-	}
-
-	public class DiagramItem : ContentControl
-	{
-		static DiagramItem()
+		protected override void OnMouseDown(MouseButtonEventArgs e)
 		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(DiagramItem), new FrameworkPropertyMetadata(typeof(DiagramItem)));
-		}
-
-		public DiagramItem()
-		{
-			LeftItems = new ObservableCollection<object>();
-			RightItems = new ObservableCollection<object>();
-		}
-
-		public static readonly DependencyProperty IsSelectedProperty = Selector.IsSelectedProperty.AddOwner(typeof(DiagramItem), new FrameworkPropertyMetadata(false, OnIsSelectedChanged));
-
-		private static void OnIsSelectedChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
-		{
-			var item = (DiagramItem)target;
-
-			if ((bool)e.NewValue)
+			if (e.ChangedButton == MouseButton.Middle)
 			{
-				item.RaiseEvent(new RoutedEventArgs(Selector.SelectedEvent, item));
+				e.Handled = true;
+				IsPanning = true;
+				_mousePositionPoint = e.GetPosition(this);
+				CaptureMouse();
 			}
 			else
 			{
-				item.RaiseEvent(new RoutedEventArgs(Selector.UnselectedEvent, item));
+				base.OnMouseDown(e);
 			}
 		}
 
-		public bool IsSelected
+		protected override void OnMouseUp(MouseButtonEventArgs e)
 		{
-			get
+			if (e.ChangedButton == MouseButton.Middle)
 			{
-				return (bool)GetValue(IsSelectedProperty);
+				e.Handled = true;
+				IsPanning = false;
+				ReleaseMouseCapture();
 			}
-			set
+			else
 			{
-				SetValue(IsSelectedProperty, value);
+				base.OnMouseUp(e);
 			}
 		}
 
-		public double X
+		protected override void OnMouseMove(MouseEventArgs e)
 		{
-			get { return (double)GetValue(XProperty); }
-			set { SetValue(XProperty, value); }
+			if (e.MiddleButton == MouseButtonState.Pressed)
+			{
+				if (!IsPanning) return;
+
+				e.Handled = true;
+				var pos = e.GetPosition(this);
+				var delta = (_mousePositionPoint - pos) * 0.08;
+				_scrollViewer.ScrollToHorizontalOffset(_scrollViewer.ContentHorizontalOffset + delta.X);
+				_scrollViewer.ScrollToVerticalOffset(_scrollViewer.ContentVerticalOffset + delta.Y);
+			}
+			else
+			{
+				if (IsPanning) ReleaseMouseCapture();
+				IsPanning = false;
+				base.OnMouseMove(e);
+			}
 		}
 
-		// Using a DependencyProperty as the backing store for X.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty XProperty =
-			DependencyProperty.Register("X", typeof(double), typeof(DiagramItem), new FrameworkPropertyMetadata(0.0, X_OnPropertyChanged));
-
-		private static void X_OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		protected override void OnLostMouseCapture(MouseEventArgs e)
 		{
-			var This = (DiagramItem)d;
-			Canvas.SetLeft(This, (double)e.NewValue);
+			IsPanning = false;
+			base.OnLostMouseCapture(e);
 		}
 
-		public double Y
+		protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
 		{
-			get { return (double)GetValue(YProperty); }
-			set { SetValue(YProperty, value); }
+			base.OnItemsChanged(e);
+			if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Replace)
+			{
+				foreach (DiagramItem item in e.NewItems)
+				{
+					item.MouseLeftButtonDown += item_MouseLeftButtonDown;
+					item.MouseMove += item_MouseMove;
+					item.MouseLeftButtonUp += item_MouseLeftButtonUp;
+					_dragInfo.Add(item, new DragInfo());
+				}
+			}
+			else if (e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace)
+			{
+				foreach (DiagramItem item in e.OldItems)
+				{
+					item.MouseLeftButtonDown -= item_MouseLeftButtonDown;
+					item.MouseMove -= item_MouseMove;
+					item.MouseLeftButtonUp -= item_MouseLeftButtonUp;
+					_dragInfo.Remove(item);
+				}
+			}
+			else if (e.Action == NotifyCollectionChangedAction.Reset)
+			{
+				foreach (DiagramItem item in Items)
+				{
+					item.MouseLeftButtonDown += item_MouseLeftButtonDown;
+					item.MouseMove += item_MouseMove;
+					item.MouseLeftButtonUp += item_MouseLeftButtonUp;
+					_dragInfo.Add(item, new DragInfo());
+				}
+			}
 		}
 
-		// Using a DependencyProperty as the backing store for Y.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty YProperty =
-			DependencyProperty.Register("Y", typeof(double), typeof(DiagramItem), new FrameworkPropertyMetadata(0.0, Y_OnPropertyChanged));
-
-		private static void Y_OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		void item_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			var This = (DiagramItem)d;
-			Canvas.SetTop(This, (double)e.NewValue);
+			var diagramItem = (DiagramItem)sender;
+			var info = _dragInfo[diagramItem];
+
+			bool dragPreventsSelection = false;
+			if (info.IsDragging)
+			{
+				var mpos = e.GetPosition(this);
+				var delta = mpos - info.DragStartPosition;
+				diagramItem.X = info.ItemStartPosition.X + delta.X;
+				diagramItem.Y = info.ItemStartPosition.Y + delta.Y;
+				dragPreventsSelection = delta.LengthSquared > 3;
+			}
+
+			info.IsDragging = false;
+			diagramItem.ReleaseMouseCapture();
+
+			if(!dragPreventsSelection) ToggleSelect(diagramItem);
 		}
 
-		public Thickness ContentMargin
+		void item_MouseMove(object sender, MouseEventArgs e)
 		{
-			get { return (Thickness)GetValue(ContentMarginProperty); }
-			set { SetValue(ContentMarginProperty, value); }
+			var diagramItem = (DiagramItem)sender;
+			var info = _dragInfo[diagramItem];
+			if (info.IsDragging)
+			{
+				var mpos = e.GetPosition(this);
+				var delta = mpos - info.DragStartPosition;
+				diagramItem.X = info.ItemStartPosition.X + delta.X;
+				diagramItem.Y = info.ItemStartPosition.Y + delta.Y;
+			}
 		}
 
-		// Using a DependencyProperty as the backing store for ContentMargin.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty ContentMarginProperty =
-			DependencyProperty.Register("ContentMargin", typeof(Thickness), typeof(DiagramItem), new FrameworkPropertyMetadata(new Thickness(5)));
-
-		public int Z
+		void item_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			get { return (int)GetValue(ZProperty); }
-			set { SetValue(ZProperty, value); }
+			var diagramItem = (DiagramItem)sender;
+			_dragInfo[diagramItem].DragStartPosition = e.GetPosition(this);
+			_dragInfo[diagramItem].ItemStartPosition = new Point(diagramItem.X, diagramItem.Y);
+			_dragInfo[diagramItem].IsDragging = true;
+			diagramItem.CaptureMouse();
 		}
 
-		// Using a DependencyProperty as the backing store for Z.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty ZProperty =
-			DependencyProperty.Register("Z", typeof(int), typeof(DiagramItem), new FrameworkPropertyMetadata(0));
+		public bool IsPanning { get; private set; }
 
+		private double _scaleFactor = 1.0;
+		private Point _mousePositionPoint;
+		private FrameworkElement _content;
+		private ScrollViewer _scrollViewer;
+		private readonly Dictionary<DiagramItem, DragInfo> _dragInfo = new Dictionary<DiagramItem, DragInfo>();
 
-		public IList LeftItems
+		private class DragInfo
 		{
-			get { return (IList)GetValue(LeftItemsProperty); }
-			set { SetValue(LeftItemsProperty, value); }
-		}
-
-		// Using a DependencyProperty as the backing store for LeftItems.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty LeftItemsProperty =
-			DependencyProperty.Register("LeftItems", typeof(IList), typeof(DiagramItem), new FrameworkPropertyMetadata(null));
-
-		public IList RightItems
-		{
-			get { return (IList)GetValue(RightItemsProperty); }
-			set { SetValue(RightItemsProperty, value); }
-		}
-
-		// Using a DependencyProperty as the backing store for RightItems.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty RightItemsProperty =
-			DependencyProperty.Register("RightItems", typeof(IList), typeof(DiagramItem), new FrameworkPropertyMetadata(null));
-
-		public DataTemplate ItemTemplate
-		{
-			get { return (DataTemplate)GetValue(ItemTemplateProperty); }
-			set { SetValue(ItemTemplateProperty, value); }
-		}
-
-		// Using a DependencyProperty as the backing store for ItemTemplate.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty ItemTemplateProperty =
-			DependencyProperty.Register("ItemTemplate", typeof(DataTemplate), typeof(DiagramItem), new FrameworkPropertyMetadata(null));
-
-		public DataTemplateSelector ItemTemplateSelector
-		{
-			get { return (DataTemplateSelector)GetValue(ItemTemplateSelectorProperty); }
-			set { SetValue(ItemTemplateSelectorProperty, value); }
-		}
-
-		// Using a DependencyProperty as the backing store for ItemTemplateSelector.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty ItemTemplateSelectorProperty =
-			DependencyProperty.Register("ItemTemplateSelector", typeof(DataTemplateSelector), typeof(DiagramItem), new FrameworkPropertyMetadata(null));
-
-		protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
-		{
-			e.Handled = true;
-			var diagram = ItemsControl.ItemsControlFromItemContainer(this) as Diagram;
-			if (diagram != null)
-				diagram.NotifyItemClicked(this);
-		}
-	}
-
-	public class DiagramItemPort : HeaderedContentControl
-	{
-		static DiagramItemPort()
-		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(DiagramItemPort), new FrameworkPropertyMetadata(typeof(DiagramItemPort)));
+			public Point DragStartPosition { get; set; }
+			public Point ItemStartPosition { get; set; }
+			public bool IsDragging { get; set; }
 		}
 	}
 }
