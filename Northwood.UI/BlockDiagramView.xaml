@@ -8,7 +8,7 @@
              d:DesignHeight="400" d:DesignWidth="900" FontFamily="Segoe UI Light" FontSize="22">
 	<UserControl.Resources>
 		<ResourceDictionary>
-			<Style TargetType="UI:DiagramItem">
+			<Style TargetType="UI:DiagramItemBlock">
 				<Setter Property="Background" Value="#FF64C7FF"></Setter>
 				<Setter Property="VerticalContentAlignment" Value="Center" />
 				<Setter Property="ContentMargin" Value="10"></Setter>
@@ -26,16 +26,16 @@
 		</ResourceDictionary>
 	</UserControl.Resources>
 	<UI:Diagram Background="White">
-		<UI:DiagramItem X="100" Y="110" Content="Multiplier">
-			<UI:DiagramItem.LeftItems>
+		<UI:DiagramItemBlock X="100" Y="110" Content="Multiplier">
+			<UI:DiagramItemBlock.LeftItems>
 				<UI:DiagramItemPort Header="Prueba">A</UI:DiagramItemPort>
 				<UI:DiagramItemPort>B</UI:DiagramItemPort>
 				<UI:DiagramItemPort>clk</UI:DiagramItemPort>
-			</UI:DiagramItem.LeftItems>
-			<UI:DiagramItem.RightItems>
+			</UI:DiagramItemBlock.LeftItems>
+			<UI:DiagramItemBlock.RightItems>
 				<UI:DiagramItemPort>hi</UI:DiagramItemPort>
 				<UI:DiagramItemPort>lo</UI:DiagramItemPort>
-			</UI:DiagramItem.RightItems>
-		</UI:DiagramItem>
+			</UI:DiagramItemBlock.RightItems>
+		</UI:DiagramItemBlock>
 	</UI:Diagram>
 </UserControl>

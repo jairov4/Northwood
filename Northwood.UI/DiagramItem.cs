@@ -1,52 +1,17 @@
-using System.Collections;
-using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 namespace Northwood.UI
 {
-	public class DiagramItem : ContentControl
+	public abstract class DiagramItem : ContentControl
 	{
-		static DiagramItem()
-		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(DiagramItem), new FrameworkPropertyMetadata(typeof(DiagramItem)));
-		}
-
-		public DiagramItem()
-		{
-			LeftItems = new ObservableCollection<object>();
-			RightItems = new ObservableCollection<object>();
-		}
-
-		public static readonly DependencyProperty IsSelectedProperty = Selector.IsSelectedProperty.AddOwner(typeof(DiagramItem), new FrameworkPropertyMetadata(false, OnIsSelectedChanged));
-
-		private static void OnIsSelectedChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
-		{
-			var item = (DiagramItem)target;
-
-			if ((bool)e.NewValue)
-			{
-				item.RaiseEvent(new RoutedEventArgs(Selector.SelectedEvent, item));
-			}
-			else
-			{
-				item.RaiseEvent(new RoutedEventArgs(Selector.UnselectedEvent, item));
-			}
-		}
-
-		public bool IsSelected
-		{
-			get
-			{
-				return (bool)GetValue(IsSelectedProperty);
-			}
-			set
-			{
-				SetValue(IsSelectedProperty, value);
-			}
-		}
-
+		
 		public double X
 		{
 			get { return (double)GetValue(XProperty); }
@@ -79,16 +44,6 @@ namespace Northwood.UI
 			Canvas.SetTop(This, (double)e.NewValue);
 		}
 
-		public Thickness ContentMargin
-		{
-			get { return (Thickness)GetValue(ContentMarginProperty); }
-			set { SetValue(ContentMarginProperty, value); }
-		}
-
-		// Using a DependencyProperty as the backing store for ContentMargin.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty ContentMarginProperty =
-			DependencyProperty.Register("ContentMargin", typeof(Thickness), typeof(DiagramItem), new FrameworkPropertyMetadata(new Thickness(5)));
-
 		public int Z
 		{
 			get { return (int)GetValue(ZProperty); }
@@ -99,45 +54,31 @@ namespace Northwood.UI
 		public static readonly DependencyProperty ZProperty =
 			DependencyProperty.Register("Z", typeof(int), typeof(DiagramItem), new FrameworkPropertyMetadata(0));
 
-		public IList LeftItems
+		public static readonly DependencyProperty IsSelectedProperty = Selector.IsSelectedProperty.AddOwner(typeof(DiagramItem), new FrameworkPropertyMetadata(false, OnIsSelectedChanged));
+
+		private static void OnIsSelectedChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
 		{
-			get { return (IList)GetValue(LeftItemsProperty); }
-			set { SetValue(LeftItemsProperty, value); }
+			var item = (DiagramItem)target;
+			item.OnIsSelectedChanged((bool)e.OldValue, (bool)e.NewValue);
 		}
 
-		// Using a DependencyProperty as the backing store for LeftItems.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty LeftItemsProperty =
-			DependencyProperty.Register("LeftItems", typeof(IList), typeof(DiagramItem), new FrameworkPropertyMetadata(null));
-
-		public IList RightItems
+		protected virtual void OnIsSelectedChanged(bool oldValue, bool newValue)
 		{
-			get { return (IList)GetValue(RightItemsProperty); }
-			set { SetValue(RightItemsProperty, value); }
+			RaiseEvent(newValue
+				? new RoutedEventArgs(Selector.SelectedEvent, this)
+				: new RoutedEventArgs(Selector.UnselectedEvent, this));
 		}
 
-		// Using a DependencyProperty as the backing store for RightItems.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty RightItemsProperty =
-			DependencyProperty.Register("RightItems", typeof(IList), typeof(DiagramItem), new FrameworkPropertyMetadata(null));
-
-		public DataTemplate ItemTemplate
+		public bool IsSelected
 		{
-			get { return (DataTemplate)GetValue(ItemTemplateProperty); }
-			set { SetValue(ItemTemplateProperty, value); }
+			get
+			{
+				return (bool)GetValue(IsSelectedProperty);
+			}
+			set
+			{
+				SetValue(IsSelectedProperty, value);
+			}
 		}
-
-		// Using a DependencyProperty as the backing store for ItemTemplate.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty ItemTemplateProperty =
-			DependencyProperty.Register("ItemTemplate", typeof(DataTemplate), typeof(DiagramItem), new FrameworkPropertyMetadata(null));
-
-		public DataTemplateSelector ItemTemplateSelector
-		{
-			get { return (DataTemplateSelector)GetValue(ItemTemplateSelectorProperty); }
-			set { SetValue(ItemTemplateSelectorProperty, value); }
-		}
-
-		// Using a DependencyProperty as the backing store for ItemTemplateSelector.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty ItemTemplateSelectorProperty =
-			DependencyProperty.Register("ItemTemplateSelector", typeof(DataTemplateSelector), typeof(DiagramItem), new FrameworkPropertyMetadata(null));
-
 	}
 }

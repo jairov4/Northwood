@@ -14,6 +14,8 @@
 							Padding="{TemplateBinding Padding}"
 							SnapsToDevicePixels="true">
 						<ScrollViewer Name="scrollViewer" 
+									  PanningMode="Both"
+									  IsDeferredScrollingEnabled="False"
 									  Padding="{TemplateBinding Padding}" 
 									  HorizontalScrollBarVisibility="Auto"
 									  VerticalScrollBarVisibility="Auto" 
@@ -23,6 +25,8 @@
 									HorizontalAlignment="Center" 
 									VerticalAlignment="Center" 
 									BorderBrush="LightGray" 
+									Margin="15"
+									ClipToBounds="True"
 									BorderThickness="2">
 								<ItemsPresenter Name="content" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
 							</Border>
@@ -48,10 +52,10 @@
 		</Setter>
 	</Style>
 
-	<Style TargetType="{x:Type local:DiagramItem}">
+	<Style TargetType="{x:Type local:DiagramItemBlock}">
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type local:DiagramItem}">
+				<ControlTemplate TargetType="{x:Type local:DiagramItemBlock}">
 					<Grid>
 						<Border Name="Bd" Focusable="True"
 								Background="{TemplateBinding Background}"

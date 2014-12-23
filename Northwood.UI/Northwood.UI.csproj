@@ -124,7 +124,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DiagramItem.cs" />
+    <Compile Include="DiagramItemBlock.cs" />
     <Compile Include="DiagramItemPort.cs" />
+    <Compile Include="DiagramItemWire.cs" />
     <Compile Include="SimpleCircleAdorner.cs" />
     <Compile Include="ViewModelResolver.cs" />
     <Compile Include="BasicEditorsFactory.cs" />

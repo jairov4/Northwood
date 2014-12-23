@@ -31,10 +31,5 @@ namespace Northwood.UI
 			drawingContext.DrawEllipse(renderBrush, renderPen, adornedElementRect.BottomLeft, renderRadius, renderRadius);
 			drawingContext.DrawEllipse(renderBrush, renderPen, adornedElementRect.BottomRight, renderRadius, renderRadius);
 		}
-
-		protected override void OnMouseDown(MouseButtonEventArgs e)
-		{
-
-		}
 	}
 }

@@ -26,57 +26,68 @@ namespace Northwood.UI
 
 		protected override bool IsItemItsOwnContainerOverride(object item)
 		{
-			return item is DiagramItem;
+			return item is DiagramItemBlock;
 		}
 
 		protected override DependencyObject GetContainerForItemOverride()
 		{
-			return new DiagramItem();
+			return new DiagramItemBlock();
 		}
 
-		private void ToggleSelect(DiagramItem diagramItem)
+		private void ToggleSelect(DiagramItemBlock diagramItemBlock)
 		{
-			if (diagramItem.IsSelected)
+			if (diagramItemBlock.IsSelected)
 			{
-				Unselect(diagramItem);
+				Unselect(diagramItemBlock);
 			}
 			else
 			{
-				Select(diagramItem);
+				Select(diagramItemBlock);
 			}
 		}
 
-		private void Select(List<DiagramItem> items)
+		private void Select(List<DiagramItemBlock> items)
 		{
 			if (IsUpdatingSelectedItems) return;
 
 			BeginUpdateSelectedItems();
 			items.ForEach(a => SelectedItems.Add(ItemContainerGenerator.ItemFromContainer(a)));
 			EndUpdateSelectedItems();
-
-			items.ForEach(x =>
-			{
-				var adornerLayer = AdornerLayer.GetAdornerLayer(x);
-				adornerLayer.Add(new SimpleCircleAdorner(x));
-			});
 		}
 
-		private void Select(DiagramItem item)
+		private void Select(DiagramItemBlock itemBlock)
 		{
-			Select(new List<DiagramItem>() { item });
+			Select(new List<DiagramItemBlock>() { itemBlock });
 		}
 
-		private void Unselect(DiagramItem item)
+		private void Unselect(DiagramItemBlock itemBlock)
 		{
 			if (IsUpdatingSelectedItems) return;
 
 			BeginUpdateSelectedItems();
-			SelectedItems.Remove(ItemContainerGenerator.ItemFromContainer(item));
+			SelectedItems.Remove(ItemContainerGenerator.ItemFromContainer(itemBlock));
 			EndUpdateSelectedItems();
+		}
 
-			var adornerLayer = AdornerLayer.GetAdornerLayer(item);
-			var adorners = adornerLayer.GetAdorners(item);
-			adornerLayer.Remove(adorners.First(x => x is SimpleCircleAdorner));
+		protected override void OnSelectionChanged(SelectionChangedEventArgs e)
+		{
+			foreach (DependencyObject item in e.AddedItems)
+			{
+				var container = (DiagramItemBlock)ContainerFromElement(item);
+				var adornerLayer = AdornerLayer.GetAdornerLayer(container);
+				adornerLayer.Add(new SimpleCircleAdorner(container));
+			}
+			foreach (DependencyObject item in e.RemovedItems)
+			{
+				var container = (DiagramItemBlock)ContainerFromElement(item);
+				var adornerLayer = AdornerLayer.GetAdornerLayer(container);
+				var adorners = adornerLayer.GetAdorners(container);
+				foreach (var adorner in adorners)
+				{
+					if(!(adorner is SimpleCircleAdorner)) continue;
+					adornerLayer.Remove(adorner);
+				}
+			}
 		}
 
 		protected override void OnTemplateChanged(ControlTemplate oldTemplate, ControlTemplate newTemplate)
@@ -123,6 +134,12 @@ namespace Northwood.UI
 			}
 		}
 
+		protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+		{
+			e.Handled = true;
+			UnselectAll();
+		}
+
 		protected override void OnMouseUp(MouseButtonEventArgs e)
 		{
 			if (e.ChangedButton == MouseButton.Middle)
@@ -145,7 +162,8 @@ namespace Northwood.UI
 
 				e.Handled = true;
 				var pos = e.GetPosition(this);
-				var delta = (_mousePositionPoint - pos) * 0.08;
+				var delta = _mousePositionPoint - pos;
+				_mousePositionPoint = pos;
 				_scrollViewer.ScrollToHorizontalOffset(_scrollViewer.ContentHorizontalOffset + delta.X);
 				_scrollViewer.ScrollToVerticalOffset(_scrollViewer.ContentVerticalOffset + delta.Y);
 			}
@@ -168,7 +186,7 @@ namespace Northwood.UI
 			base.OnItemsChanged(e);
 			if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Replace)
 			{
-				foreach (DiagramItem item in e.NewItems)
+				foreach (DiagramItemBlock item in e.NewItems)
 				{
 					item.MouseLeftButtonDown += item_MouseLeftButtonDown;
 					item.MouseMove += item_MouseMove;
@@ -178,7 +196,7 @@ namespace Northwood.UI
 			}
 			else if (e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace)
 			{
-				foreach (DiagramItem item in e.OldItems)
+				foreach (DiagramItemBlock item in e.OldItems)
 				{
 					item.MouseLeftButtonDown -= item_MouseLeftButtonDown;
 					item.MouseMove -= item_MouseMove;
@@ -188,7 +206,7 @@ namespace Northwood.UI
 			}
 			else if (e.Action == NotifyCollectionChangedAction.Reset)
 			{
-				foreach (DiagramItem item in Items)
+				foreach (DiagramItemBlock item in Items)
 				{
 					item.MouseLeftButtonDown += item_MouseLeftButtonDown;
 					item.MouseMove += item_MouseMove;
@@ -200,41 +218,47 @@ namespace Northwood.UI
 
 		void item_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			var diagramItem = (DiagramItem)sender;
+			var diagramItem = (DiagramItemBlock)sender;
 			var info = _dragInfo[diagramItem];
 
 			bool dragPreventsSelection = false;
 			if (info.IsDragging)
 			{
 				var mpos = e.GetPosition(this);
-				var delta = mpos - info.DragStartPosition;
-				diagramItem.X = info.ItemStartPosition.X + delta.X;
-				diagramItem.Y = info.ItemStartPosition.Y + delta.Y;
-				dragPreventsSelection = delta.LengthSquared > 3;
+				var deltaLengthSquared = ApplyMouseDrag(mpos, info, diagramItem);
+				dragPreventsSelection = deltaLengthSquared > 3;
+				info.IsDragging = false;
 			}
 
-			info.IsDragging = false;
 			diagramItem.ReleaseMouseCapture();
 
-			if(!dragPreventsSelection) ToggleSelect(diagramItem);
+			if (!dragPreventsSelection) ToggleSelect(diagramItem);
+
+			e.Handled = true;
 		}
 
 		void item_MouseMove(object sender, MouseEventArgs e)
 		{
-			var diagramItem = (DiagramItem)sender;
+			var diagramItem = (DiagramItemBlock)sender;
 			var info = _dragInfo[diagramItem];
 			if (info.IsDragging)
 			{
 				var mpos = e.GetPosition(this);
-				var delta = mpos - info.DragStartPosition;
-				diagramItem.X = info.ItemStartPosition.X + delta.X;
-				diagramItem.Y = info.ItemStartPosition.Y + delta.Y;
+				ApplyMouseDrag(mpos, info, diagramItem);
 			}
+		}
+
+		private double ApplyMouseDrag(Point mpos, DragInfo info, DiagramItemBlock diagramItem)
+		{
+			var delta = (mpos - info.DragStartPosition)/_scaleFactor;
+			diagramItem.X = info.ItemStartPosition.X + delta.X;
+			diagramItem.Y = info.ItemStartPosition.Y + delta.Y;
+			return delta.LengthSquared;
 		}
 
 		void item_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			var diagramItem = (DiagramItem)sender;
+			var diagramItem = (DiagramItemBlock)sender;
 			_dragInfo[diagramItem].DragStartPosition = e.GetPosition(this);
 			_dragInfo[diagramItem].ItemStartPosition = new Point(diagramItem.X, diagramItem.Y);
 			_dragInfo[diagramItem].IsDragging = true;
@@ -247,7 +271,7 @@ namespace Northwood.UI
 		private Point _mousePositionPoint;
 		private FrameworkElement _content;
 		private ScrollViewer _scrollViewer;
-		private readonly Dictionary<DiagramItem, DragInfo> _dragInfo = new Dictionary<DiagramItem, DragInfo>();
+		private readonly Dictionary<DiagramItemBlock, DragInfo> _dragInfo = new Dictionary<DiagramItemBlock, DragInfo>();
 
 		private class DragInfo
 		{
