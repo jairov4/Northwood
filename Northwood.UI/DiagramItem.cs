@@ -25,8 +25,10 @@ namespace Northwood.UI
 		private static void X_OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var This = (DiagramItem)d;
-			Canvas.SetLeft(This, (double)e.NewValue);
+			if (This.XPropertyChanged != null) This.XPropertyChanged(This, e);
 		}
+
+		public event PropertyChangedCallback XPropertyChanged;
 
 		public double Y
 		{
@@ -41,8 +43,10 @@ namespace Northwood.UI
 		private static void Y_OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var This = (DiagramItem)d;
-			Canvas.SetTop(This, (double)e.NewValue);
+			if (This.YPropertyChanged != null) This.YPropertyChanged(This, e);
 		}
+		
+		public event PropertyChangedCallback YPropertyChanged;
 
 		public int Z
 		{

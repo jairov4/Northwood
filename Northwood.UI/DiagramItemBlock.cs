@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -19,7 +20,6 @@ namespace Northwood.UI
 			RightItems = new ObservableCollection<object>();
 		}
 
-		
 		public Thickness ContentMargin
 		{
 			get { return (Thickness)GetValue(ContentMarginProperty); }
@@ -30,7 +30,7 @@ namespace Northwood.UI
 		public static readonly DependencyProperty ContentMarginProperty =
 			DependencyProperty.Register("ContentMargin", typeof(Thickness), typeof(DiagramItemBlock), new FrameworkPropertyMetadata(new Thickness(5)));
 
-		
+
 		public IList LeftItems
 		{
 			get { return (IList)GetValue(LeftItemsProperty); }
