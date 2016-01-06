@@ -4,6 +4,10 @@
 
 Northwood project is a WPF application designed to be the simplest one for digital design entry for educational purposes. Northwood is designed to be a lightweight tool that you may use in seconds. We approach zero configuration time, template based creation, modern UI, touch friendly, stylus friendly, extensible via plugins, FPGA vendor independent.
 
+![Screenshot1](https://raw.githubusercontent.com/jairov4/Northwood/master/Screenshots/Northwood1.png "Screenshot 1")
+![Screenshot2](https://raw.githubusercontent.com/jairov4/Northwood/master/Screenshots/Northwood2.png "Screenshot 2")
+
+
 # Why Northwood?
 
 As a lecturer in Computer Architecture, I have found my students ramping an 80° learning curve when I try to hit practical experience over solid foundation. This is a tool availability issue. Here I list some considerations to get Northwood in my mind (2014).
