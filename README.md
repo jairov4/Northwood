@@ -1,6 +1,6 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/363mn20sg3wxxi58?svg=true)](https://ci.appveyor.com/project/jairov4/northwood)
-
 # What is Northwood?
+
+[![Build status](https://ci.appveyor.com/api/projects/status/363mn20sg3wxxi58?svg=true)](https://ci.appveyor.com/project/jairov4/northwood)
 
 Northwood project is a WPF application designed to be the simplest one for digital design entry for educational purposes. Northwood is designed to be a lightweight tool that you may use in seconds. We approach zero configuration time, template based creation, modern UI, touch friendly, stylus friendly, extensible via plugins, FPGA vendor independent.
 
